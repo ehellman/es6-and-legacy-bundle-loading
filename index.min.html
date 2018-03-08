@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ES6 and Legacy bundle loading</title>
+  </head>
+  <body>
+    Hi
+    <script>
+      // populate this on the server or via webpack
+      window.__APP_CHUNKS__ = {
+        es: [
+          '/main.js',
+          '/first.chunk.js',
+          '/second.chunk.js'
+        ],
+        legacy: [
+          '/main.legacy.js',
+          '/first.legacy.chunk.js',
+          '/second.legacy.chunk.js'
+        ]
+      };
+      // load correct bundles
+      var s=document.createElement('script');var c=[];if(s.noModule===false)
+      {window.__APP_CHUNKS__.es.forEach(function(h){var n=document.createElement('script');
+      n.setAttribute('src', h);c.push(n);});}else{window.__APP_CHUNKS__.legacy.forEach(
+      function(b){var g=document.createElement('script');g.setAttribute('src', b);c.push(g);
+      });};c.forEach(function(v){v.setAttribute('defer',true);document.body.appendChild(v);});
+    </script>
+  </body>
+</html>

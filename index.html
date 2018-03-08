@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ES6 and Legacy bundle loading</title>
+  </head>
+  <body>
+    <script>
+      
+      // populate this on the server or via webpack
+      window.__APP_CHUNKS__ = {
+        es: [
+          '/main.js',
+          '/first.chunk.js',
+          '/second.chunk.js'
+        ],
+        legacy: [
+          '/main.legacy.js',
+          '/first.legacy.chunk.js',
+          '/second.legacy.chunk.js'
+        ]
+      };
+      var appScript = document.createElement('script');
+      var chunks = [];
+      if (appScript.noModule === false) {
+        // If `noModule` is defined on the script tag, the browser should support Modules
+        window.__APP_CHUNKS__.es.forEach(function(chunk) {
+          var es6ChunkScriptTag = document.createElement('script');
+          es6ChunkScriptTag.setAttribute('src', chunk);
+          chunks.push(es6ChunkScriptTag);
+        });
+      } else {
+        // Otherwise load the legacy src
+        window.__APP_CHUNKS__.legacy.forEach(function(chunk) {
+          var legacyChunkScriptTag = document.createElement('script');
+          legacyChunkScriptTag.setAttribute('src', chunk);
+          chunks.push(legacyChunkScriptTag);
+        });
+      };
+      
+      chunks.forEach(function(chunk) {
+        chunk.setAttribute('defer', true);
+        document.body.appendChild(chunk);
+      });
+    </script>
+  </body>
+</html>
